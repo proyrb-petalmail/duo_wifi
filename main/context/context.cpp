@@ -82,22 +82,6 @@ namespace wifi
         Debug_Notice("load gui json file successfully");
     }
 
-    configor::json::value &context::get_pipe_value(const std::string &label)
-    {
-        return this->pipe_json[label.data()];
-    }
-
-    void context::replace_pipe_value(const std::string &label, const std::string &value)
-    {
-        if (!this->pipe_json[label.data()].is_string())
-        {
-            Debug_Error(label.data() << "is not a string");
-            throw error(error::error_enum::Type);
-        }
-        this->pipe_json[label.data()] = value;
-        Debug_Notice("replace the value of pipe successfully");
-    }
-
     configor::json::value &context::get_gui_value(const std::string &label)
     {
         return this->gui_json[label.data()];
@@ -116,17 +100,7 @@ namespace wifi
 
     void context::record()
     {
-        ofstream outfile_stream(context::unique->pipe_json_name); /* open pipe json */
-        if (false == outfile_stream.is_open())
-        {
-            Debug_Error("failed to open pipe json");
-            throw error(error::error_enum::Open);
-        }
-        outfile_stream << setw(4) << json::wrap(context::unique->pipe_json); /* read pipe json */
-        outfile_stream.close();
-        Debug_Notice("record pipe successfully");
-
-        outfile_stream.open(context::unique->gui_json_name); /* open gui json */
+        ofstream outfile_stream(context::unique->gui_json_name); /* open gui json */
         if (false == outfile_stream.is_open())
         {
             Debug_Error("failed to open gui json");

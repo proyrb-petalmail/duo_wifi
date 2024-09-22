@@ -14,8 +14,6 @@ namespace wifi
     private:
         static context *unique;
         std::string program_directory;
-        std::string pipe_json_name;
-        configor::json::value pipe_json;
         std::string gui_json_name;
         configor::json::value gui_json;
         context();
@@ -48,26 +46,6 @@ namespace wifi
          * @author ProYRB
          */
         void load_gui_json(const std::string &gui_json_name);
-
-        /**
-         * @brief get the value of label of pipe json.
-         * @param label the label of value.
-         * @return return the json value.
-         * @version 1.0
-         * @date 2024/9/19
-         * @author ProYRB
-         */
-        configor::json::value &get_pipe_value(const std::string &label);
-
-        /**
-         * @brief replace the value of pipe json.
-         * @param label the label of value.
-         * @param value the value to replace.
-         * @version 1.0
-         * @date 2024/9/19
-         * @author ProYRB
-         */
-        void replace_pipe_value(const std::string &label, const std::string &value);
 
         /**
          * @brief get the value of label of gui json.

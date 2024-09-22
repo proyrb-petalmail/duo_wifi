@@ -35,7 +35,7 @@ int main(const int argument_count, char **const argument_value)
     {
         string command_string("find /dev -wholename " +
                               argument_parser.get<string>(Argument_Fbdev) +
-                              " > .cmdlog");                /* generate command */
+                              " >> .cmdlog");               /* generate command */
         int command_result = system(command_string.data()); /* execute command */
         if (0 != command_result)
         {
@@ -47,7 +47,7 @@ int main(const int argument_count, char **const argument_value)
         command_string.clear();
         command_string.append("find /dev -wholename " +
                               argument_parser.get<string>(Argument_Evdev) +
-                              " > .cmdlog");            /* generate command */
+                              " >> .cmdlog");           /* generate command */
         command_result = system(command_string.data()); /* execute command */
         if (0 != command_result)
         {
@@ -56,7 +56,8 @@ int main(const int argument_count, char **const argument_value)
         }
         Debug_Notice("find evdev successfully");
 
-        context->load_gui_json(argument_parser.get<string>(Argument_Gui)); /* load gui json file */
+        context->load_gui_json(context->get_program_directory() +
+                               argument_parser.get<string>(Argument_Gui)); /* load gui json file */
     }
     catch (error &error)
     {
