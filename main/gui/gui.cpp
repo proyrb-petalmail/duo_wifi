@@ -1,6 +1,7 @@
 #include "gui.hpp"
 #include "debug.hpp"
 #include "error.hpp"
+#include "font.hpp"
 #include "main.hpp"
 
 #include <fstream>
@@ -271,7 +272,7 @@ namespace wifi
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_radius(this->name_editor, BAR_RADIUS, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_hor(this->name_editor, BAR_PAD, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_style_text_font(this->name_editor, &lv_font_montserrat_30,
+        lv_obj_set_style_text_font(this->name_editor, &lv_font_custom_30,
                                    LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_letter_space(this->name_editor, 2, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_remove_flag(this->name_editor, LV_OBJ_FLAG_SCROLLABLE);
@@ -342,7 +343,7 @@ namespace wifi
                                   LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_radius(this->password_editor, BAR_RADIUS, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_hor(this->password_editor, BAR_PAD, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_style_text_font(this->password_editor, &lv_font_montserrat_30,
+        lv_obj_set_style_text_font(this->password_editor, &lv_font_custom_30,
                                    LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_letter_space(this->password_editor, 2,
                                            LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -485,18 +486,34 @@ namespace wifi
                         (lv_obj_get_height(this->screen) / 3) + PANEL_HEIGHT);
         lv_obj_set_align(this->input_container, LV_ALIGN_BOTTOM_MID);
         lv_obj_remove_flag(this->input_container, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_add_flag(this->input_container, LV_OBJ_FLAG_OVERFLOW_VISIBLE);
         lv_obj_update_layout(this->screen);
         Debug_Log("deploy input_container");
 
         /* deploy keyboard */
         this->keyboard = lv_keyboard_create(this->input_container);
-        lv_obj_set_size(this->keyboard, lv_obj_get_width(this->input_container),
+        lv_obj_set_size(this->keyboard, lv_obj_get_width(this->screen),
                         lv_obj_get_height(this->screen) / 3);
         lv_obj_set_align(this->keyboard, LV_ALIGN_BOTTOM_MID);
         lv_keyboard_set_textarea(this->keyboard, name_editor);
         lv_obj_add_flag(this->keyboard, LV_OBJ_FLAG_OVERFLOW_VISIBLE);
         lv_obj_update_layout(this->screen);
         Debug_Log("deploy keyboard");
+
+        /* deploy pinyin */
+        this->pinyin = lv_ime_pinyin_create(this->keyboard);
+        lv_obj_set_style_text_font(this->pinyin, &lv_font_custom_30,
+                                   LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_ime_pinyin_set_dict(this->pinyin, lv_ime_pinyin_dict);
+        lv_ime_pinyin_set_keyboard(this->pinyin, this->keyboard);
+        lv_obj_update_layout(this->screen);
+        Debug_Log("deploy pinyin");
+
+        this->cand_panel = lv_ime_pinyin_get_cand_panel(this->pinyin);
+        lv_obj_set_size(this->cand_panel, LV_PCT(100), PANEL_HEIGHT);
+        lv_obj_align_to(this->cand_panel, this->keyboard, LV_ALIGN_OUT_TOP_MID, 0, 0);
+        lv_obj_update_layout(this->screen);
+        Debug_Log("deploy cand");
 
         Debug_Notice("initialize gui successfully");
 

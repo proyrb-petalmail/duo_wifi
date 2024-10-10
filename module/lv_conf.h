@@ -915,7 +915,7 @@
 
 /*1: Enable Pinyin input method*/
 /*Requires: lv_keyboard*/
-#define LV_USE_IME_PINYIN 0
+#define LV_USE_IME_PINYIN 1
 #if LV_USE_IME_PINYIN
     /*1: Use default thesaurus*/
     /*If you do not use the default thesaurus, be sure to use `lv_ime_pinyin` after setting the thesaurus*/
@@ -980,7 +980,7 @@
 #define LV_USE_LINUX_FBDEV 1
 #if LV_USE_LINUX_FBDEV
     #define LV_LINUX_FBDEV_BSD          0
-    #define LV_LINUX_FBDEV_RENDER_MODE  LV_DISPLAY_RENDER_MODE_DIRECT // LV_DISPLAY_RENDER_MODE_PARTIAL
+    #define LV_LINUX_FBDEV_RENDER_MODE  LV_DISPLAY_RENDER_MODE_PARTIAL // LV_DISPLAY_RENDER_MODE_DIRECT
     #define LV_LINUX_FBDEV_BUFFER_COUNT 2
     #define LV_LINUX_FBDEV_BUFFER_SIZE  1024
 #endif
